@@ -22,23 +22,23 @@ The solution to this project is located in the directory `.github/workflows/`:
 
 # Images pushed to ECR
 
-[ecr-images](images/repository-images.png)
+![ecr-images](images/repository-images.png)
 
 # Deployment description of frontend
 
-[deployment-frontend](images/deployment-frontend.png)
+![deployment-frontend](images/deployment-frontend.png)
 
 # Pod description of frontend
 
-[pod-frontend](images/pod-frontend.png)
+![pod-frontend](images/pod-frontend.png)
 
 # Deployment description of backend
 
-[deployment-backend](images/deployment-backend.png)
+![deployment-backend](images/deployment-backend.png)
 
 # Pod description of backend
 
-[pod-backend](images/pod-backend.png)
+![pod-backend](images/pod-backend.png)
 
 # Deployment description of backend
 
