@@ -1,0 +1,131 @@
+name: Frontend Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'starter/frontend/**'
+  
+  workflow_dispatch:
+
+jobs:
+
+  lint-frontend:
+    name: 'Lint Frontend'
+    runs-on: ubuntu-latest   # Use the latest Ubuntu runner
+
+    steps:
+      # Check out the code to the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup NodeJS
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Cache node modules
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: starter/frontend/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      # Install dependencies only if cache is missing
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: starter/frontend
+
+      # Run lint
+      - name: Run lint
+        run: npm run lint
+        working-directory: starter/frontend
+
+  test-frontend:
+    name: 'Test Frontend'
+    runs-on: ubuntu-latest   # Use the latest Ubuntu runner
+
+    steps:
+      # Check out the code to the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup NodeJS
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Cache node modules
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: starter/frontend/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      # Install dependencies only if cache is missing
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: starter/frontend
+
+      # Run test
+      - name: Run test
+        run: npm run test
+        working-directory: starter/frontend
+
+  build-frontend:
+    name: 'Build Frontend'
+    needs: [ lint-frontend, test-frontend ]
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the code to the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Setup NodeJS
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Cache node modules
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: starter/frontend/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('starter/frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      # Install dependencies only if cache is missing
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+        working-directory: starter/frontend
+
+      # Setup Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Build docker image
+      - name: Build docker image
+        run: |
+          cd starter/frontend
+          docker build --no-cache --build-arg=REACT_APP_MOVIE_API_URL=http://localhost:5000 --tag=mp-frontend:latest .
+      
+      # Run docker image
+      - name: Run docker image
+        run: docker run --name mp-frontend -p 3000:3000 -d mp-frontend
+      
+      # Review logs
+      - name: Review logs
+        run: docker logs mp-frontend
