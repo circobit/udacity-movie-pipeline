@@ -40,8 +40,6 @@ The solution to this project is located in the directory `.github/workflows/`:
 
 ![pod-backend](images/pod-backend.png)
 
-# Deployment description of backend
-
 ## Deliverables
 
 ### Frontend
