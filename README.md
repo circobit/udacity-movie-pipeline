@@ -18,6 +18,30 @@ The solution to this project is located in the directory `.github/workflows/`:
 - `.github/workflows/frontend-cd.yaml`
 - `.github/workflows/backend-cd.yaml`
 
+## Screenshots
+
+# Images pushed to ECR
+
+[ecr-images](images/repository-images.png)
+
+# Deployment description of frontend
+
+[deployment-frontend](images/deployment-frontend.png)
+
+# Pod description of frontend
+
+[pod-frontend](images/pod-frontend.png)
+
+# Deployment description of backend
+
+[deployment-backend](images/deployment-backend.png)
+
+# Pod description of backend
+
+[pod-backend](images/pod-backend.png)
+
+# Deployment description of backend
+
 ## Deliverables
 
 ### Frontend
